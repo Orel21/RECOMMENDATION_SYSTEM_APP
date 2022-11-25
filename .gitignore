@@ -1,3 +1,5 @@
 recommendation_system_app_env
 __pycache__
 .vscode
+*.csv
+

@@ -1,4 +1,14 @@
 h1{
-    color : whitesmoke;
-    font-family : Arial, Helvetica, sans-serif;}
+    color : red;
+    /*display: flex;*/
+    align-items: center;
+    justify-content: center;
+    }
 
+body{
+    background-color: rgb(0, 0, 0);
+    color : whitesmoke;
+    font-family: Arial, Helvetica, sans-serif;
+    
+
+}
