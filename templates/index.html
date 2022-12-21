@@ -7,17 +7,24 @@
     <title>RECOMMENDATION_SYSTEM_APP</title>
     <link rel="stylesheet" href="static\style.css">
 </head>
-
 <body>
-    <h1 class = "h1">RECOMMENDATION SYSTEM APP</h1>
+    <div class="header">
+        <h1 class = "h1">BOOKS'APP</h1>
+    </div>
+    <section>
+        <!-- <img class="bookbg" src="/static/images/book.jpeg" style="width:100%"> -->
+    </section>
     <br * 10> 
-    <p>Please, enter an user_id and press button for generating new recommandations</p>
+    <p>Please, <strong>select or enter an user_id</strong> and press button to <strong>generate</strong> new recommandations</p>
     <form action="/" method="post">
-        <input type="text" value="user_id">
+        <select name="user_id" id="user_id-select">
+            <option value="">--Please select an user_id--</option>
+            <option value="dog">1</option>
+            <option value="cat">706</option>
+        </select>       
+        <input type="text" name="user_id_input_button" id="user_id_input" required minlength="1" maxlength="8" size="10">
         <button type="submit">submit</button>
-        <button type="submit" style = "background-color: red;">generate</button>
-
-
+        <button type="submit" style = "background-color: black; color :white">generate</button>
     </form>
 </body>
 </html>

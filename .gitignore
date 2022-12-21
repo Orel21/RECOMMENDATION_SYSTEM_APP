@@ -2,4 +2,5 @@ recommendation_system_app_env
 __pycache__
 .vscode
 *.csv
-
+articles_embeddings.pickle
+static/images
