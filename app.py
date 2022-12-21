@@ -4,10 +4,13 @@ import numpy as np
 import pickle
 import json
 import os
+import flask_monitoringdashboard as dashboard
 
 
 # Create application
 app = Flask(__name__)
+# Monitoring
+dashboard.bind(app)
 
 # ------------------------------------------
 # ROUTING

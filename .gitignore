@@ -4,3 +4,4 @@ __pycache__
 *.csv
 articles_embeddings.pickle
 static/images
+flask_monitoringdashboard.db

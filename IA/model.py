@@ -26,29 +26,29 @@ warnings.filterwarnings("ignore")
 # ----------------------------------------------------------
 
 def get_data():
-    #articles_embeddings = pickle.load(open('articles_embeddings.pickle', 'rb'))
+    articles_embeddings = pickle.load(open('articles_embeddings.pickle', 'rb'))
     df_clicks = pd.read_csv("clicks_sample.csv")
     df_articles_metadata = pd.read_csv("articles_metadata.csv", parse_dates = ["created_at_ts"] )
 
-    return df_clicks, df_articles_metadata #articles_embeddings
+    return  articles_embeddings, df_clicks, df_articles_metadata
 
 
 # ----------------------------------------------------------
 # PREPROCESSING
 # ----------------------------------------------------------
 
-def prepro(df_clicks, df_articles_metadata): # articles_embeddings
+def prepro(articles_embeddings, df_clicks, df_articles_metadata): 
 
     # delete prefix "click_" for merging tables on "article_id" later
     df_clicks = df_clicks.rename(columns = lambda x: x.strip('click_'))
     df_clicks.rename({"ountry": "country"}, axis = 1, inplace = True)
     
     # merge to get overall dataset :
-    
+
     # append embeddings to df_articles_metadata
-    #df_articles_metadata["articles_embeddings"] = articles_embeddings.tolist()
+    df_articles_metadata["articles_embeddings"] = articles_embeddings.tolist()
     # Check if we get all dimensions of embeddings (250 columns,364047 rows)
-    #print(df_articles_metadata["articles_embeddings"].apply(len))
+    print(df_articles_metadata["articles_embeddings"].apply(len))
 
     df_merged = pd.merge(df_clicks, df_articles_metadata, on='article_id', how='inner')
     print("df_merged.info\n", df_merged.info)
@@ -67,7 +67,7 @@ def prepro(df_clicks, df_articles_metadata): # articles_embeddings
 
     # Checker nombre total de valeurs manquantes et de doublons
     print("There are", df_merged.isna().sum().sum(), "NaN")
-    print("There are", df_merged.duplicated().sum(),"Duplicated")
+    #print("There are", df_merged.duplicated().sum(),"Duplicated")
     print("-"*30)
     print("Check number of  users :", df_merged.user_id.value_counts()) # 707 users
     print("Check number of articles :", df_merged.article_id.nunique()) # 323 articles
@@ -84,8 +84,18 @@ def prepro(df_clicks, df_articles_metadata): # articles_embeddings
     return df_dropped
 
 
-df_clicks, df_articles_metadata =get_data()
-df_dropped = prepro(df_clicks, df_articles_metadata)
+articles_embeddings,df_clicks, df_articles_metadata = get_data()
+df_dropped = prepro(articles_embeddings, df_clicks, df_articles_metadata)
+
+# Create a list of the best articles' rating for inserting into a carrousel's recommendation
+df_best_session = df_dropped[df_dropped.session_size >= 5].sort_values(by="session_size", ascending=False)
+print(df_best_session.head())
+
+for x in df_best_session.itertuples():
+    best_session_embeddings = x.articles_embeddings
+    # Show only the first embedding for testing
+    print(best_session_embeddings[0]) 
+
 exit()
 
 
