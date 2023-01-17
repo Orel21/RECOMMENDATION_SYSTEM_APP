@@ -3,5 +3,8 @@ __pycache__
 .vscode
 *.csv
 articles_embeddings.pickle
-static/images
-flask_monitoringdashboard.db
+static
+*.db
+wheel-0.38.4-py3-none-any.whl
+*.html
+*.pkl

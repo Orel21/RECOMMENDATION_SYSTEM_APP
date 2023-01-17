@@ -9,7 +9,7 @@ import datetime as dt
 from datetime import datetime 
 import datetime
 import os
-import pickle 
+import pickle as pkl
 from collections import defaultdict
 from surprise import Reader, Dataset
 from surprise.model_selection import train_test_split, cross_validate
@@ -26,7 +26,7 @@ warnings.filterwarnings("ignore")
 # ----------------------------------------------------------
 
 def get_data():
-    articles_embeddings = pickle.load(open('articles_embeddings.pickle', 'rb'))
+    articles_embeddings = pkl.load(open('articles_embeddings.pickle', 'rb'))
     df_clicks = pd.read_csv("clicks_sample.csv")
     df_articles_metadata = pd.read_csv("articles_metadata.csv", parse_dates = ["created_at_ts"] )
 
@@ -74,28 +74,14 @@ def prepro(articles_embeddings, df_clicks, df_articles_metadata):
 
     # Delete session_size over 5 interactions
     df_dropped = df_merged[df_merged.session_size <= 5]
-    print("shape after drop session_size <= 5:",df_dropped.shape)
+    print("shape after drop session_size <= 5:", df_dropped.shape)
     
     # Delete articles with <= 400 words 
     df_dropped = df_dropped[df_dropped.words_count<= 400]
-    print("shape after drop words_count <= 400 :", df_dropped.shape)    
+    print("shape after drop words_count <= 400 :", df_dropped.shape)
+    # df_dropped.to_csv('df_dropped.csv', index = False)   
     
     return df_dropped
-
-
-articles_embeddings,df_clicks, df_articles_metadata = get_data()
-df_dropped = prepro(articles_embeddings, df_clicks, df_articles_metadata)
-
-# Create a list of the best articles' rating for inserting into a carrousel's recommendation
-#df_best_session = df_dropped[df_dropped.session_size >= 5].sort_values(by="session_size", ascending=False)
-#print(df_best_session.head())
-
-#for x in df_best_session.itertuples():
-    #best_session_embeddings = x.articles_embeddings
-    # Show only the first embedding for testing
-    #print(best_session_embeddings[0]) 
-
-#exit()
 
 
 # ----------------------------------------------------------
@@ -109,10 +95,7 @@ def training_model(df_dropped):
     Args :
         df_dropped(dataframe) : dataframe cleaned after preprocessing
     Returns :
-        predictions : predictions as a list returned by Surprise
-        df_reco : dataframe with predictions
-        MODEL : model saved as a pickle object
-        RMSE_KNN : RMSE
+        testset : testset after split for evaluation
     """
 
     # Dataset's preparation for Surprise Library, we have to respect this format below:
@@ -122,7 +105,7 @@ def training_model(df_dropped):
  
     # Split data in training and test sets
     trainset, testset = train_test_split(data, test_size=0.3,random_state=10)
-    print(testset)
+    #print("testset" , testset)
 
     # Utiliser user_based true/false pour basculer entre le filtrage collaboratif basé sur l'utilisateur ou sur les articles.
     # modules de similarité : cosine , msd, pearson, pearson_baseline (shrunk)
@@ -132,12 +115,30 @@ def training_model(df_dropped):
     cross_val = cross_validate(KNN_articles, data, measures=['RMSE', 'MAE'], cv=5, verbose=True)
     KNN_articles.fit(trainset)
 
+    # Save model as a pickle object (serialization)
+    filename ='KNN_articles.pkl'
+    pkl.dump(KNN_articles, open(filename, 'wb'))
+
+    return testset
+
+
+def get_predictions(testset, MODEL):
+    """
+    Args : 
+        testset : idem
+        MODEL: model saved as a pickle object and loaded
+    Returns :
+        predictions : predictions as a list returned by Surprise
+        df_reco : dataframe with predictions
+        RMSE_KNN : RMSE
+    """
+
     # test
-    predictions = KNN_articles.test(testset)
+    predictions = MODEL.test(testset)
 
     # Surprise returns results as a list
     print(type(predictions)); print(' ')
-    print(predictions)
+    #print(predictions)
 
     # Convert output in df for more lisibility
     df_pred = pd.DataFrame(predictions, columns = ['uid','iid','r_ui','est','details'])
@@ -148,10 +149,7 @@ def training_model(df_dropped):
 
     # get RMSE
     RMSE_KNN = round(accuracy.rmse(predictions, verbose=True),2)
-    print(RMSE_KNN)
-
-    # tester sur l'utilisateur 458, [3] => 'est'
-    #KNN_articles.predict(uid = 458, iid = 236682)[3]
+    print("RMSE_KNN",RMSE_KNN)
 
     # Sortir les pred par utilisateur
     df_reco = df_pred.groupby('uid').agg(article = ("iid", lambda x: list(x)))
@@ -159,18 +157,14 @@ def training_model(df_dropped):
     df_reco = df_reco.sort_values(by = "pred", ascending = False)
     print(df_reco)
 
-    # Enregistrer le modèle au format pickle (sérialisation)
-    filename ='KNN_articles.pkl'
-    MODEL = pickle.dump(KNN_articles, open(filename, 'wb'))
-
-    return predictions, df_reco, MODEL, RMSE_KNN
-
-# Only now for check everything is OK
-KNN_articles = pickle.load(open('KNN_articles.pkl', 'rb'))  
-print(KNN_articles)
+    return predictions, df_reco, RMSE_KNN
 
 
-def get_recommandation(predictions, n=5):
+# ----------------------------------------------------------
+# RECOMMENDATIONS
+# ----------------------------------------------------------
+
+def get_recommendation(predictions, n=5):
     """
     Renvoie les recommendations les plus élevées pour chaque utilisateur à partir d'un ensemble de prédictions.
 
@@ -184,36 +178,50 @@ def get_recommandation(predictions, n=5):
     """
 
     # Affecter les prédictions à chaque utilisateur
-    top_recommandation = defaultdict(list)
+    top_recommendation = defaultdict(list)
     for uid, iid, r_ui, est, _ in predictions:
-        top_recommandation[uid].append((iid, est))
+        top_recommendation[uid].append((iid, est))
 
     # Trier les prédictions pour chaque utilisateur 
     # Récupérer les k prédictions les plus élevées
-    for uid, user_ratings in top_recommandation.items():
+    for uid, user_ratings in top_recommendation.items():
         user_ratings.sort(key=lambda x: x[1], reverse=True)
-        top_recommandation[uid] = user_ratings[:n]
+        top_recommendation[uid] = user_ratings[:n]
 
-    return top_recommandation
+    # Save top_recommandation as a pickle object    
+    # with open("top_recommendation.txt", "wb") as fp:
+    #     pkl.dump(top_recommendation, fp)
 
-
-top_recommandation = get_recommandation(predictions, n=5)
-
-# Save top_recommandation as a pickle object    
-with open("top_recommandation.txt", "wb") as fp:
-    pickle.dump(top_recommandation, fp)
+    return top_recommendation
 
 
-def find_recommandation(dico, user_id):
+def find_recommendation(dico, user_id):
     results = []
     query = dico[user_id]
-    for uid, user_ratings in query:
+    for uid, est in query:
         results.append(uid)
     return results
 
 
-#Tester sur le user 458
-print(find_recommandation(top_recommandation, 458))
+# Get data & Preprocessing
+articles_embeddings, df_clicks, df_articles_metadata = get_data()
+df_dropped = prepro(articles_embeddings, df_clicks, df_articles_metadata)
+
+# Get model: if not pickle model, train model
+testset = training_model(df_dropped)
+MODEL = pkl.load(open('KNN_articles.pkl', 'rb'))
+
+# Get predictions
+predictions, df_reco, RMSE_KNN = get_predictions(testset, MODEL)
+print("training_model OK")
+
+# Get recommendations
+top_recommendation = get_recommendation(predictions, n=5)
+print("top_recommendation OK", top_recommendation)
+
+#Testing on user 458
+user = 458
+print("Reco for user :", find_recommendation(top_recommendation, user))
 
 
 
