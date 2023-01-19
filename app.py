@@ -49,14 +49,14 @@ def executing_training_model():
 #    print("if File is found, load 'KNN_articles.pkl'") 
 #    MODEL = pkl.load(open('KNN_articles.pkl','rb'))
 
-_, predictions, top_recommendation, MODEL, RMSE_KNN = executing_training_model()
+#_, predictions, top_recommendation, MODEL, RMSE_KNN = executing_training_model()
 
 #Testing on user 458
-user = 458
-reco_for_user = find_recommendation(top_recommendation, user)
-print("Reco for user", user, ":", reco_for_user)
+# user = 458
+# reco_for_user = find_recommendation(top_recommendation, user)
+# print("Reco for user", user, ":", reco_for_user)
 
-print("testing app")
+# print("testing app")
 
 
 # ------------------------------------------
@@ -101,11 +101,14 @@ def predict():
         options_id_for_dropdown.append(idx[1])
         # Order list by ascending values
         options_id_for_dropdown= sorted(options_id_for_dropdown)
+    
+    _, predictions, top_recommendation, MODEL, RMSE_KNN = executing_training_model()
 
     if request.method == 'POST':
-        # input_user = 458
-        input_user = request.args.get('input_user') 
+        input_user = 458
+        #input_user = request.args.get("input_user") 
         print("input_user", input_user)
+
         reco_for_user = find_recommendation(top_recommendation, input_user)
         
     return render_template('index.html', input_user = input_user, reco_for_user = reco_for_user, df_dropped= df_dropped, options_id_for_dropdown=options_id_for_dropdown)

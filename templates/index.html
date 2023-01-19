@@ -24,7 +24,7 @@
     <p>Please, <strong>select or enter an user_id</strong> and press button to <strong>generate</strong> new recommendations</p>
     <form action="/predict" method="post">
         <!-- Returns list of user_id for selector from {{options_id_for_dropdown}} -->
-        <select name="input_user" id ="user_id-select" class="btn btn-sm btn-outline-dark" style= "width:220px;">
+        <select name="input_user" id ="user_id_select" class="btn btn-sm btn-outline-dark" style= "width:220px;">
             <option value="">--Please select an user_id--</option>
             {% for x in options_id_for_dropdown %}
                 <option value="">{{x}}</option>
@@ -34,7 +34,7 @@
         <button type="submit" class="btn btn-secondary">Submit</button> -->
         <button type="submit" class="btn btn-warning">Generate</button>
         <!-- <input type="submit" value ="Generate"> -->
-        <textarea readonly name="results" id="results_id" cols="30" rows="6">{{input_user}}</textarea>
+        <textarea readonly name="results" id="results_id" cols="30" rows="6"> recommendations for user {{input_user}}: {{reco_for_user}}</textarea>
     </form>
     <!-- TOP RECOMMENDATIONS END -->
 
