@@ -46,7 +46,7 @@ def prepro(articles_embeddings, df_clicks, df_articles_metadata):
     # append embeddings to df_articles_metadata
     df_articles_metadata["articles_embeddings"] = articles_embeddings.tolist()
     # Check if we get all dimensions of embeddings (250 columns,364047 rows)
-    print(df_articles_metadata["articles_embeddings"].apply(len))
+    # print(df_articles_metadata["articles_embeddings"].apply(len))
     
     # merge to get overall dataset :
     df_merged = pd.merge(df_clicks, df_articles_metadata, on='article_id', how='inner')
@@ -145,17 +145,17 @@ def get_predictions(testset, MODEL):
 
     # round output of "est"
     df_pred['est'] = [np.round(x) for x in df_pred['est']]
-    print(df_pred)
+    #print(df_pred)
 
     # get RMSE
     RMSE_KNN = round(accuracy.rmse(predictions, verbose=True),2)
-    print("RMSE_KNN",RMSE_KNN)
+    #print("RMSE_KNN",RMSE_KNN)
 
     # Sortir les pred par utilisateur
     df_reco = df_pred.groupby('uid').agg(article = ("iid", lambda x: list(x)))
     df_reco['pred'] = df_pred.groupby('uid').agg(pred = ("est", lambda x: list(x)))
     df_reco = df_reco.sort_values(by = "pred", ascending = False)
-    print(df_reco)
+    #print(df_reco)
 
     return predictions, df_reco, RMSE_KNN
 
@@ -201,27 +201,3 @@ def find_recommendation(dico, user_id):
     for uid, est in query:
         results.append(uid)
     return results
-
-
-# Get data & Preprocessing
-articles_embeddings, df_clicks, df_articles_metadata = get_data()
-df_dropped = prepro(articles_embeddings, df_clicks, df_articles_metadata)
-
-# Get model: if not pickle model, train model
-testset = training_model(df_dropped)
-MODEL = pkl.load(open('KNN_articles.pkl', 'rb'))
-
-# Get predictions
-predictions, df_reco, RMSE_KNN = get_predictions(testset, MODEL)
-print("training_model OK")
-
-# Get recommendations
-top_recommendation = get_recommendation(predictions, n=5)
-print("top_recommendation OK", top_recommendation)
-
-#Testing on user 458
-user = 458
-print("Reco for user :", find_recommendation(top_recommendation, user))
-
-
-

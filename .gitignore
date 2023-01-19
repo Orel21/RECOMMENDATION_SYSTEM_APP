@@ -1,10 +1,11 @@
 recommendation_system_app_env
 __pycache__
 .vscode
-*.csv
+# *.csv
 articles_embeddings.pickle
+articles_metadata.csv
+clicks_sample.csv
 static
 *.db
 wheel-0.38.4-py3-none-any.whl
 *.html
-*.pkl

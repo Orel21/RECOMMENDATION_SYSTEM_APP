@@ -13,23 +13,30 @@
         <h1 class = "h1">BOOKS'APP</h1>
         <a class="btn btn-info" href="http://localhost:5000/dashboard/overview" target="_blank" role="button" style = "background-color: rgb(0, 0, 0); color : whitesmoke">Monitoring</a>
     </div>
-    <section>
-        <!--<img class="bookbg" src="/static/images/book.jpeg" style="width:100%"> -->
-    </section>
-    <br * 10> 
+    <br * 10>
+    <!-- TOP ARTICLES BEGIN -->
+    <p>Top articles (best_session)</p>
+    <textarea readonly name="best_session_embeddings" id="best_session_id" cols="30" rows="6" style = "width:700px; height: 150px;">{{best_session_embeddings}}</textarea>
+    <!-- TOP ARTICLES END -->
+    <hr>
+    <!-- TOP RECOMMENDATIONS BEGIN -->
     <p>Please, <strong>select or enter an user_id</strong> and press button to <strong>generate</strong> new recommendations</p>
-    <form action="/" method="post">
-    <!-- {{options_id_for_dropdown}} -->
-        <select name="user_id" id ="user_id-select" class="btn btn-sm btn-outline-dark" style= "width:220px;">
+    <form action="/predict" method="post">
+        <!-- Returns list of user_id for selector from {{options_id_for_dropdown}} -->
+        <select name="input_user" id ="user_id-select" class="btn btn-sm btn-outline-dark" style= "width:220px;">
             <option value="">--Please select an user_id--</option>
             {% for x in options_id_for_dropdown %}
                 <option value="">{{x}}</option>
-            {% endfor  %}
-        </select>
-        <input type="text" name="user_id_input_button" id="user_id_input" required minlength="1" maxlength="8" size="10">
-        <button type="submit">submit</button>
-        <button type="submit" class="btn btn-warning">generate</button>
+            {% endfor %}
+        </select>     
+        <!-- <input type="text" name="user_id_input_button" id="user_id_input" class="btn btn-sm btn-outline-dark" required minlength="1" maxlength="8" size="8">   
+        <button type="submit" class="btn btn-secondary">Submit</button> -->
+        <button type="submit" class="btn btn-warning">Generate</button>
+        <!-- <input type="submit" value ="Generate"> -->
+        <textarea readonly name="results" id="results_id" cols="30" rows="6">{{input_user}}</textarea>
     </form>
+    <!-- TOP RECOMMENDATIONS END -->
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 </body>
 </html>
