@@ -15,11 +15,12 @@
     </div>
     <br * 10>
     <!-- TOP ARTICLES BEGIN -->
-    <p>Top articles (best_session)</p>
+    <p>TOP ARTICLES (best_session)</p>
     <textarea readonly name="best_session_embeddings" id="best_session_id" cols="30" rows="6" style = "width:700px; height: 150px;">{{best_session_embeddings}}</textarea>
     <!-- TOP ARTICLES END -->
     <hr>
     <!-- TOP RECOMMENDATIONS BEGIN -->
+    <p>TOP RECOMENDATIONS</p>
     <p>Please, <strong>select or enter an user_id</strong> and press button to <strong>generate</strong> new recommendations</p>
     <form action="/predict" method="post">
         <!-- Returns list of user_id for selector from {{options_id_for_dropdown}} -->
