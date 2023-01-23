@@ -1,43 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RECOMMENDATION_SYSTEM_APP</title>
-    <link rel="stylesheet" href="static\style.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-</head>
-<body>
-    <div class="header">
-        <h1 class = "h1">BOOKS'APP</h1>
-        <a class="btn btn-info" href="http://localhost:5000/dashboard/overview" target="_blank" role="button" style = "background-color: rgb(0, 0, 0); color : whitesmoke">Monitoring</a>
-    </div>
-    <br * 10>
-    <!-- TOP ARTICLES BEGIN -->
-    <p>TOP ARTICLES (best_session)</p>
-    <textarea readonly name="best_session_embeddings" id="best_session_id" cols="30" rows="6" style = "width:700px; height: 150px;">{{best_session_embeddings}}</textarea>
-    <!-- TOP ARTICLES END -->
-    <hr>
-    <!-- TOP RECOMMENDATIONS BEGIN -->
-    <p>TOP RECOMMENDATIONS</p>
-    <p>Please, <strong>select or enter an user_id</strong> and press button to <strong>generate</strong> new recommendations</p>
-    <form action="/predict" method="post">
-        <!-- Returns list of user_id for selector from {{options_id_for_dropdown}} -->
-        <select name="input_user" id ="user_id_select" class="btn btn-sm btn-outline-dark" style= "width:220px;">
-            <option value=" ">--Please select an user_id--</option>
-            {% for x in options_id_for_dropdown %}
-                <option value="{{x}}">{{x}}</option>
-            {% endfor %}
-        </select>     
-        <!-- <input type="text" name="user_id_input_button" id="user_id_input" class="btn btn-sm btn-outline-dark" required minlength="1" maxlength="8" size="8">   
-        <button type="submit" class="btn btn-secondary">Submit</button> -->
-        <button type="submit" class="btn btn-warning">Generate</button>
-        <!-- <input type="submit" value ="Generate"> -->
-        <textarea readonly name="results" id="results_id" cols="30" rows="6">recommendations for user {{input_user}}: {{reco_for_user}}</textarea>
-    </form>
-    <!-- TOP RECOMMENDATIONS END -->
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-</body>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>BOOKS'APP</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="static/assets/favicon.ico" />
+        <!-- Font Awesome icons -->
+        <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="static/css/styles.css" rel="stylesheet" />
+    </head>
+    <body id="page-top">
+        <!-- Navigation BEGIN -->
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+            <div class="container">
+                <!-- <a class="navbar-brand" href="#page-top"><img src="static/assets/img/navbar-logo.svg" alt="..." /></a> -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    Menu
+                    <i class="fas fa-bars ms-1"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#portfolio">Recommendations</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#about">Top_10</a></li>
+                        <!-- <li class="nav-item"><a class="nav-link" href="#team">Categories</a></li> -->
+                        <!-- <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li> -->
+                        <li class="nav-item"><a class="btn btn-info" href="http://localhost:5000/dashboard/overview" target="_blank" role="button" style = "background-color: rgb(0, 0, 0); border: 2px solid #ffc800; color : whitesmoke">Monitoring</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Navigation END -->
+        <!-- Masthead BEGIN -->
+        <header class="masthead">
+            <div class="container">
+                <div class="masthead-subheading" style= "font-family: Montserrat, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji; font-style: normal;">A system recommendations' app for curious people</div>
+                <div class="masthead-heading text-uppercase">Book's App</div>
+                <a class="btn btn-primary btn-xl text-uppercase" href="#services">services</a>
+            </div>
+        </header>
+        <!-- Masthead END -->
+        <!-- Services BEGIN -->
+        <section class="page-section" id="services">
+            <div class="container">
+                <div class="text-center">
+                    <h2 class="section-heading text-uppercase">Services</h2>
+                    <h3 class="section-subheading text-muted">Let yourself be tempted by the experience</h3>
+                </div>
+                <div class="row text-center">
+                    <div class="col-md-4">
+                        <span class="fa-stack fa-4x">
+                            <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                            <i class="fas fa fa-address-book fa-stack-1x fa-inverse"></i>
+                        </span>
+                        <h4 class="my-3">Recommendations</h4>
+                        <p class="text-muted">Try and trust in our new recommendations only suggested for you. Discover your future favorite article among a catalog of many references</p>
+                    </div>
+                    <div class="col-md-4">
+                        <span class="fa-stack fa-4x">
+                            <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                            <!-- <i class="fas fa fa-book fa-stack-1x fa-inverse"></i> -->
+                            <i class="fas fa fa-thumbs-up fa-stack-1x fa-inverse"></i>
+                        </span>
+                        <h4 class="my-3">Top articles</h4>
+                        <p class="text-muted">Explore other curiosities you will love among the best rated articles by the community. We are convinced that this may surprise you.</p>
+                    </div>
+                    <div class="col-md-4">
+                        <span class="fa-stack fa-4x">
+                            <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                            <i class="fas fa fa-bookmark fa-stack-1x fa-inverse"></i>
+                        </span>
+                        <h4 class="my-3">My library</h4>
+                        <p class="text-muted">Store and add all your readings to your library. Check your favorite articles, comment and share with your community.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Services END -->
+        <!-- Recommendations' grid BEGIN -->
+        <section class="page-section bg-light" id="portfolio">
+            <div class="container">
+                <div class="text-center">
+                    <h2 class="section-heading text-uppercase">recommendations</h2>
+                    <h3 class="section-subheading text-muted">Get 6 reading suggestions every day.<br>Please, <strong>select or enter an user_id</strong> and press button to <strong>get</strong> new recommendations.</h3>
+                    <h3 class="section-subheading text-muted" style = 'height: 80px;'>
+                        <form action="/predict" method="post">
+                            <!-- Returns list of user_id for selector from {{options_id_for_dropdown}} -->
+                            <select name="input_user" id ="user_id-select" class="btn btn-sm btn-outline-dark" style= "width:220px;">
+                                <option value=" ">--Please select an user_id--</option>
+                                {% for x in options_id_for_dropdown %}
+                                    <option class = 'option' value="{{x}}">{{x}}</option>
+                                {% endfor %}
+                            </select>  or    
+                            <input type="text" name="user_id_input_button" id="user_id_input" class="btn btn-sm btn-outline-dark" minlength="1" maxlength="8" size="8">    <!-- required -->
+                            <button type="submit" class="btn btn-secondary">Submit</button>
+                            <button type="submit" class="btn btn-warning">Generate</button>
+                            <!-- <textarea readonly name="results" id="results_id" cols="30" rows="6"> recommendations for user {{input_user}}: {{reco_for_user}}</textarea> -->
+                        </form> 
+                    </h3>
+                </div>
+                <br * 5>
+            </div> 
+        </section>
+        <!-- Recommendations' grid END -->
+        <!-- Top articles BEGIN -->
+        <section class="page-section" id="about">
+            <div class="container">
+                <div class="text-center">
+                    <h2 class="section-heading text-uppercase">TOP ARTICLES</h2>
+                    <h3 class="section-subheading text-muted" >Would you like more recommendations? Take a look at the best articles in our catalogue</h3>
+                    <!-- <h3 class="section-subheading text-muted"> -->
+                    <textarea readonly name="best_session_embeddings" id="best_session_id" cols="30" rows="6" style = "width:700px; height: 150px;">{{best_session_embeddings}}</textarea>
+                </div> 
+            </div>
+        </section>
+        <!-- Top articles END -->
+        <!-- Footer BEGIN-->
+        <footer class="footer py-4 bg-light " >
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-4 text-lg-start">Copyright &copy; Books'App 2023</div>
+                    <div class="col-lg-4 my-3 my-lg-0">
+                        <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                    <div class="col-lg-4 text-lg-end">
+                        <a class="link-dark text-decoration-none me-3" href="#!">Privacy Policy</a>
+                        <a class="link-dark text-decoration-none" href="#!">Terms of Use</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- Footer END-->
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="static/js/scripts.js"></script>
+        <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+    </body>
 </html>

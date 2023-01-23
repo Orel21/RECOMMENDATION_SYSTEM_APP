@@ -8,4 +8,4 @@ clicks_sample.csv
 static
 *.db
 wheel-0.38.4-py3-none-any.whl
-*.html
+indexbs.html

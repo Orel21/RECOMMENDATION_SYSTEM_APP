@@ -134,7 +134,7 @@ def predict():
         #Show only the first embedding for testing
         print(best_session_embeddings[0])
         
-    return render_template('index.html', input_user = input_user, reco_for_user = reco_for_user, df_dropped= df_dropped, options_id_for_dropdown=options_id_for_dropdown, best_session_embeddings=best_session_embeddings, get_article_id=get_article_id, get_category_id=get_category_id, get_publisher_id=get_publisher_id)
+    return render_template('predict.html', input_user = input_user, reco_for_user = reco_for_user, df_dropped= df_dropped, options_id_for_dropdown=options_id_for_dropdown, best_session_embeddings=best_session_embeddings, get_article_id=get_article_id, get_category_id=get_category_id, get_publisher_id=get_publisher_id)
 
 
 #(debug = True) Refresh the page without always having to restart the exe
