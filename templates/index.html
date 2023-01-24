@@ -103,7 +103,21 @@
                             <button type="submit" class="btn btn-secondary">Submit</button>
                             <button type="submit" class="btn btn-warning">Generate</button>
                             <!-- <textarea readonly name="results" id="results_id" cols="30" rows="6"> recommendations for user {{input_user}}: {{reco_for_user}}</textarea> -->
-                        </form> 
+                        </form>
+                        <div class="row justify-content-center">
+                            <div class="col-4">
+                            {% for c in get_category_id_1 %}
+                                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                                <label class="form-check-label" for="exampleRadios1">{{c}}</label>
+                            {% endfor %}
+                            </div>
+                            <div class="col-4">
+                            {% for c in get_category_id_2 %}
+                                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                                <label class="form-check-label" for="exampleRadios1">{{c}}</label>
+                            {% endfor %}
+                            </div>
+                        </div> 
                     </h3>
                 </div>
                 <br * 5>
@@ -145,5 +159,5 @@
         <!-- Core theme JS-->
         <script src="static/js/scripts.js"></script>
         <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
-    </body>
+        </body>
 </html>

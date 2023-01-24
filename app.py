@@ -77,8 +77,21 @@ def home():
         options_id_for_dropdown.append(idx[1])
         # Order list by ascending values
         options_id_for_dropdown= sorted(options_id_for_dropdown)
+    
+    # get category_id for adding recommendations' details in modal
+    get_category_id = []
+    for cat in enumerate(df_dropped.category_id.unique()):
+        get_category_id.append(cat[1])
+        get_category_id_1 =get_category_id[:5]
+        get_category_id_2 =get_category_id[5:10]
+        # Order list by ascending values
+        get_category_id = sorted(get_category_id)
+        get_category_id_1 = sorted(get_category_id_1)
+        get_category_id_2 = sorted(get_category_id_2)
 
-    return render_template("index.html", best_session_embeddings=best_session_embeddings, options_id_for_dropdown = options_id_for_dropdown) 
+
+    return render_template("index.html", best_session_embeddings=best_session_embeddings, options_id_for_dropdown = options_id_for_dropdown, get_category_id=get_category_id, get_category_id_1=get_category_id_1, 
+    get_category_id_2=get_category_id_2) 
 
 
 @app.route('/predict', methods = ['GET', 'POST'])
@@ -113,6 +126,11 @@ def predict():
         get_category_id.append(cat[1])
         # Order list by ascending values
         get_category_id = sorted(get_category_id)
+
+    # get words_count for adding recommendations' details in modal
+    get_words_count = []
+    for word in enumerate(df_dropped.category_id.unique()):
+        get_words_count.append(word[1])
     
     _, _, top_recommendation, _, _ = executing_training_model()
 
@@ -134,7 +152,9 @@ def predict():
         #Show only the first embedding for testing
         print(best_session_embeddings[0])
         
-    return render_template('predict.html', input_user = input_user, reco_for_user = reco_for_user, df_dropped= df_dropped, options_id_for_dropdown=options_id_for_dropdown, best_session_embeddings=best_session_embeddings, get_article_id=get_article_id, get_category_id=get_category_id, get_publisher_id=get_publisher_id)
+    return render_template('predict.html', input_user = input_user, reco_for_user = reco_for_user, df_dropped= df_dropped,
+    options_id_for_dropdown=options_id_for_dropdown, best_session_embeddings=best_session_embeddings,
+    get_article_id=get_article_id, get_category_id=get_category_id, get_publisher_id=get_publisher_id, get_words_count=get_words_count)
 
 
 #(debug = True) Refresh the page without always having to restart the exe
