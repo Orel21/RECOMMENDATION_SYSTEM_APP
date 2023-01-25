@@ -82,16 +82,32 @@ def home():
     get_category_id = []
     for cat in enumerate(df_dropped.category_id.unique()):
         get_category_id.append(cat[1])
-        get_category_id_1 =get_category_id[:5]
-        get_category_id_2 =get_category_id[5:10]
         # Order list by ascending values
         get_category_id = sorted(get_category_id)
-        get_category_id_1 = sorted(get_category_id_1)
-        get_category_id_2 = sorted(get_category_id_2)
 
 
-    return render_template("index.html", best_session_embeddings=best_session_embeddings, options_id_for_dropdown = options_id_for_dropdown, get_category_id=get_category_id, get_category_id_1=get_category_id_1, 
-    get_category_id_2=get_category_id_2) 
+    
+    # Create a list of the best articles' rating for inserting into a recommendations' carrousel
+    df_best_session = df_dropped[df_dropped.session_size >= 5].sort_values(by="session_size", ascending=False)
+    print("df_best_session", df_best_session.head())
+    print("df_best_session shape", df_best_session.shape)
+
+    best_session_embeddings = []
+    for x in df_best_session.itertuples():
+        best_session_embeddings.append(x.articles_embeddings)
+        #Show only the first embedding for testing
+        print(best_session_embeddings[0])
+
+    # Get category_id from best_session
+    get_category_best_session = []
+    for cat_best in enumerate(df_best_session.category_id.unique()):
+        get_category_best_session.append(cat_best[1])
+        get_category_best_session =get_category_id[:10]
+        # Order list by ascending values
+        get_category_best_session = sorted(get_category_best_session)  
+
+    return render_template("index.html", best_session_embeddings=best_session_embeddings, options_id_for_dropdown = options_id_for_dropdown,
+     get_category_id=get_category_id, get_category_best_session=get_category_best_session)
 
 
 @app.route('/predict', methods = ['GET', 'POST'])
@@ -141,7 +157,7 @@ def predict():
         reco_for_user = find_recommendation(top_recommendation, input_user)
         print("reco_for_user", reco_for_user)
 
-    # Create a list of the best articles' rating for inserting into a carrousel's recommendation
+    # Create a list of the best articles' rating for inserting into a recommendations' carrousel
     df_best_session = df_dropped[df_dropped.session_size >= 5].sort_values(by="session_size", ascending=False)
     print("df_best_session", df_best_session.head())
     print("df_best_session shape", df_best_session.shape)
@@ -151,10 +167,19 @@ def predict():
         best_session_embeddings.append(x.articles_embeddings)
         #Show only the first embedding for testing
         print(best_session_embeddings[0])
+
+    # Get category_id from best_session
+    get_category_best_session = []
+    for cat_best in enumerate(df_best_session.category_id.unique()):
+        get_category_best_session.append(cat_best[1])
+        get_category_best_session =get_category_id[:10]
+        # Order list by ascending values
+        get_category_best_session = sorted(get_category_best_session)   
         
     return render_template('predict.html', input_user = input_user, reco_for_user = reco_for_user, df_dropped= df_dropped,
     options_id_for_dropdown=options_id_for_dropdown, best_session_embeddings=best_session_embeddings,
-    get_article_id=get_article_id, get_category_id=get_category_id, get_publisher_id=get_publisher_id, get_words_count=get_words_count)
+    get_article_id=get_article_id, get_category_id=get_category_id, get_publisher_id=get_publisher_id, get_words_count=get_words_count,
+    get_category_best_session=get_category_best_session)
 
 
 #(debug = True) Refresh the page without always having to restart the exe

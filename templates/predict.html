@@ -20,7 +20,7 @@
         <!-- Navigation BEGIN -->
         <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
             <div class="container">
-                <!-- <a class="navbar-brand" href="#page-top"><img src="static/assets/img/navbar-logo.svg" alt="..." /></a> -->
+                <a class="navbar-brand" href="#page-top"><img src="static/assets/img/navbar-logo.png" alt="..." /></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                     Menu
                     <i class="fas fa-bars ms-1"></i>
@@ -30,7 +30,7 @@
                         <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
                         <li class="nav-item"><a class="nav-link" href="#portfolio">Recommendations</a></li>
                         <li class="nav-item"><a class="nav-link" href="#about">Top_10</a></li>
-                        <!-- <li class="nav-item"><a class="nav-link" href="#team">Categories</a></li> -->
+                        <li class="nav-item"><a class="nav-link" href="#team">My library</a></li>
                         <!-- <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li> -->
                         <li class="nav-item"><a class="btn btn-info" href="http://localhost:5000/dashboard/overview" target="_blank" role="button" style = "background-color: rgb(0, 0, 0); border: 2px solid #ffc800; color : whitesmoke">Monitoring</a></li>
                     </ul>
@@ -120,8 +120,8 @@
                                 <img class="img-fluid" src="static/assets/img/portfolio/1.jpg" alt="..." />
                             </a>
                             <div class="portfolio-caption">
-                                <div class="portfolio-caption-heading">Threads</div>
-                                <div class="portfolio-caption-subheading text-muted">Illustration</div>
+                                <div class="portfolio-caption-heading">Category : 102 </div>
+                                <div class="portfolio-caption-subheading text-muted">Publisher : {{get_publisher_id}}</div>
                             </div>
                         </div>
                     </div>
@@ -135,8 +135,8 @@
                                 <img class="img-fluid" src="static/assets/img/portfolio/2.jpg" alt="..." />
                             </a>
                             <div class="portfolio-caption">
-                                <div class="portfolio-caption-heading">Explore</div>
-                                <div class="portfolio-caption-subheading text-muted">Graphic Design</div>
+                                <div class="portfolio-caption-heading">Category : 56</div>
+                                <div class="portfolio-caption-subheading text-muted">Publisher : {{get_publisher_id}}</div>
                             </div>
                         </div>
                     </div>
@@ -150,8 +150,8 @@
                                 <img class="img-fluid" src="static/assets/img/portfolio/3.jpg" alt="..." />
                             </a>
                             <div class="portfolio-caption">
-                                <div class="portfolio-caption-heading">Finish</div>
-                                <div class="portfolio-caption-subheading text-muted">Identity</div>
+                                <div class="portfolio-caption-heading">Category : 11</div>
+                                <div class="portfolio-caption-subheading text-muted">Publisher : {{get_publisher_id}}</div>
                             </div>
                         </div>
                     </div>
@@ -165,8 +165,8 @@
                                 <img class="img-fluid" src="static/assets/img/portfolio/4.jpg" alt="..." />
                             </a>
                             <div class="portfolio-caption">
-                                <div class="portfolio-caption-heading">Lines</div>
-                                <div class="portfolio-caption-subheading text-muted">Branding</div>
+                                <div class="portfolio-caption-heading">Category : 83</div>
+                                <div class="portfolio-caption-subheading text-muted">Publisher : {{get_publisher_id}}</div>
                             </div>
                         </div>
                     </div>
@@ -180,8 +180,8 @@
                                 <img class="img-fluid" src="static/assets/img/portfolio/5.jpg" alt="..." />
                             </a>
                             <div class="portfolio-caption">
-                                <div class="portfolio-caption-heading">Southwest</div>
-                                <div class="portfolio-caption-subheading text-muted">Website Design</div>
+                                <div class="portfolio-caption-heading">Category 4</div>
+                                <div class="portfolio-caption-subheading text-muted">Publisher : {{get_publisher_id}}</div>
                             </div>
                         </div>
                     </div>
@@ -195,8 +195,8 @@
                                 <img class="img-fluid" src="static/assets/img/portfolio/6.jpg" alt="..." />
                             </a>
                             <div class="portfolio-caption">
-                                <div class="portfolio-caption-heading">Window</div>
-                                <div class="portfolio-caption-subheading text-muted">Photography</div>
+                                <div class="portfolio-caption-heading">Category : 21</div>
+                                <div class="portfolio-caption-subheading text-muted">Publisher : {{get_publisher_id}}</div>
                             </div>
                         </div>
                     </div>
@@ -208,14 +208,29 @@
         <section class="page-section" id="about">
             <div class="container">
                 <div class="text-center">
-                    <h2 class="section-heading text-uppercase">TOP ARTICLES</h2>
-                    <h3 class="section-subheading text-muted">Would you like more recommendations? Take a look at the best articles in our catalogue</h3>
-                    <!-- <h3 class="section-subheading text-muted"> -->
-                    <textarea readonly name="best_session_embeddings" id="best_session_id" cols="30" rows="6" style = "width:700px; height: 150px;">{{best_session_embeddings}}</textarea>
+                    <h2 class="section-heading text-uppercase">TOP ARTICLES</h2>                   
+                    <h3 class="section-subheading text-muted" >Would you like more recommendations? Take a look at the best articles in our catalogue.
+                        <br>Use filter to select a category or "all" to get an overview.</h3>                    
+                        <h3 class="section-subheading-tuned text-muted">
+                        <div class="row justify-content-center">
+                            <div class="col-4">
+                                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="all" checked>
+                                <label class="form-check-label" for="exampleRadios1">all</label>
+                            {% for c in get_category_best_session %}
+                                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="options" checked>
+                                <label class="form-check-label" for="exampleRadios1">{{c}}</label>
+                            {% endfor %}
+                            </div>                            
+                        </div>
+                    <textarea class = "textarea-tuned" readonly name="best_session_embeddings" id="best_session_id" cols="30" rows="6" style = "width:700px; height: 150px;">{{best_session_embeddings}}</textarea>
                 </div> 
             </div>
         </section>
         <!-- Top articles END -->
+        <!-- My library BEGIN -->
+        <!-- <section class="page-section" id="team">
+            </section> -->
+        <!-- My library END -->
         <!-- Footer BEGIN-->
         <footer class="footer py-4 bg-light " >
             <div class="container">
@@ -250,7 +265,7 @@
                                         <h2 class="text-uppercase">Title of {{i}}</h2>
                                     {% endif %}      
                                 {% endfor %}
-                                    <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
+                                    <p class="item-intro text-muted">29-01-2023 | words_count : 215</p>
                                     <img class="img-fluid d-block mx-auto" src="static/assets/img/portfolio/1.jpg" alt="..." />
                                     <p>[EXTRACT] Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
                                     <ul class="list-inline">
@@ -272,6 +287,10 @@
                                     <button class="btn btn-primary btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
                                         <i class="fas fa fa-arrow-right me-1"></i>
                                         Go to article
+                                    </button>                                    
+                                    <button type="submit" class="btn btn-secondary btn-xl text-uppercase">
+                                        <i class="fas fa fa-bookmark me-1"></i>
+                                        Save
                                     </button>
                                 </div>
                             </div>
@@ -294,17 +313,15 @@
                                 {% for i in get_article_id %}
                                     {% if i == reco_for_user[1] %}                                    
                                     <h2 class="text-uppercase">Title of {{i}}</h2>
-                                        {% for w in get_words_count %}
-                                        <p class="item-intro text-muted">22-01-2023 | words_count : {{w}}</p>
-                                        {% endfor %}
                                     {% endif %}
                                 {% endfor %}
+                                    <p class="item-intro text-muted">22-01-2023 | words_count : 418</p>
                                     <img class="img-fluid d-block mx-auto" src="static/assets/img/portfolio/2.jpg" alt="..." />
                                     <p>[EXTRACT] Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
                                     <ul class="list-inline">
                                         <li>
                                             <strong>Publisher:</strong>
-                                            [0]
+                                            {{get_publisher_id}}
                                         </li>
                                         <li>
                                             <strong>Category:</strong>
@@ -314,6 +331,10 @@
                                     <button class="btn btn-primary btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
                                         <i class="fas fa fa-arrow-right me-1"></i>
                                         Go to article
+                                    </button>
+                                    <button type="submit" class="btn btn-secondary btn-xl text-uppercase">
+                                        <i class="fas fa fa-bookmark me-1"></i>
+                                        Save
                                     </button>
                                 </div>
                             </div>
@@ -338,13 +359,13 @@
                                     <h2 class="text-uppercase">Title of {{i}}</h2>
                                     {% endif %}
                                 {% endfor %}
-                                    <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
+                                    <p class="item-intro text-muted">21-04-2022 | words_count : 217</p>
                                     <img class="img-fluid d-block mx-auto" src="static/assets/img/portfolio/3.jpg" alt="..." />
                                     <p>[EXTRACT] Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
                                     <ul class="list-inline">
                                         <li>
                                             <strong>Publisher:</strong>
-                                            Finish
+                                            {{get_publisher_id}}
                                         </li>
                                         <li>
                                             <strong>Category:</strong>
@@ -354,6 +375,10 @@
                                     <button class="btn btn-primary btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
                                         <i class="fas fa fa-arrow-right me-1"></i>
                                         Go to article
+                                    </button>
+                                    <button type="submit" class="btn btn-secondary btn-xl text-uppercase">
+                                        <i class="fas fa fa-bookmark me-1"></i>
+                                        Save
                                     </button>
                                 </div>
                             </div>
@@ -378,13 +403,13 @@
                                     <h2 class="text-uppercase">Title of {{i}}</h2>
                                     {% endif %}
                                 {% endfor %}
-                                    <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
+                                    <p class="item-intro text-muted">18-11-2022 | words_count : 158</p>
                                     <img class="img-fluid d-block mx-auto" src="static/assets/img/portfolio/4.jpg" alt="..." />
-                                    <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
+                                    <p>[EXTRACT] Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
                                     <ul class="list-inline">
                                         <li>
                                             <strong>Publisher:</strong>
-                                            Lines
+                                            {{get_publisher_id}}
                                         </li>
                                         <li>
                                             <strong>Category:</strong>
@@ -394,6 +419,10 @@
                                     <button class="btn btn-primary btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
                                         <i class="fas fa fa-arrow-right me-1"></i>
                                         Go to article
+                                    </button>
+                                    <button type="submit" class="btn btn-secondary btn-xl text-uppercase">
+                                        <i class="fas fa fa-bookmark me-1"></i>
+                                        Save
                                     </button>
                                 </div>
                             </div>
@@ -418,13 +447,13 @@
                                     <h2 class="text-uppercase">Title of {{i}}</h2>
                                     {% endif %}
                                 {% endfor %}
-                                    <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
+                                    <p class="item-intro text-muted">04-12-2022 | words_count : 154</p>
                                     <img class="img-fluid d-block mx-auto" src="static/assets/img/portfolio/5.jpg" alt="..." />
-                                    <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
+                                    <p>[EXTRACT] Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
                                     <ul class="list-inline">
                                         <li>
                                             <strong>Publisher:</strong>
-                                            Southwest
+                                            {{get_publisher_id}}
                                         </li>
                                         <li>
                                             <strong>Category:</strong>
@@ -434,6 +463,10 @@
                                     <button class="btn btn-primary btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
                                         <i class="fas fa fa-arrow-right me-1"></i>
                                         Go to article
+                                    </button>
+                                    <button type="submit" class="btn btn-secondary btn-xl text-uppercase">
+                                        <i class="fas fa fa-bookmark me-1"></i>
+                                        Save
                                     </button>
                                 </div>
                             </div>
@@ -458,13 +491,13 @@
                                     <h2 class="text-uppercase">Title of {{i}}</h2>
                                     {% endif %}
                                 {% endfor %}
-                                    <p class="item-intro text-muted"> 22-01-2023 | words_count : {{get_words_count}} .</p>
+                                    <p class="item-intro text-muted"> 22-01-2023 | words_count : 234</p>
                                     <img class="img-fluid d-block mx-auto" src="static/assets/img/portfolio/6.jpg" alt="..." />
-                                    <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
+                                    <p>[EXTRACT] Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
                                     <ul class="list-inline">
                                         <li>
                                             <strong>Publisher:</strong>
-                                            Window
+                                            {{get_publisher_id}}
                                         </li>
                                         <li>
                                             <strong>Category:</strong>
@@ -474,6 +507,10 @@
                                     <button class="btn btn-primary btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
                                         <i class="fas fa fa-arrow-right me-1"></i>
                                         Go to article
+                                    </button>
+                                    <button type="submit" class="btn btn-secondary btn-xl text-uppercase">
+                                        <i class="fas fa fa-bookmark me-1"></i>
+                                        Save
                                     </button>
                                 </div>
                             </div>
