@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, render_template_string, redirect
+from flask import Flask, render_template, request, jsonify, render_template_string, redirect, url_for
 import pandas as pd
 import numpy as np
 import pickle as pkl
@@ -180,6 +180,22 @@ def predict():
     options_id_for_dropdown=options_id_for_dropdown, best_session_embeddings=best_session_embeddings,
     get_article_id=get_article_id, get_category_id=get_category_id, get_publisher_id=get_publisher_id, get_words_count=get_words_count,
     get_category_best_session=get_category_best_session)
+
+
+
+@app.route('/library', methods = ['GET', 'POST'])
+def input_bdd():
+
+    # if request.method == 'POST':
+    #     title = request.form.get('title')
+    #     publisher = request.form.get('publisher')
+    #     category = request.form.get('category')
+    #     year = request.form.get('year_of_publication')
+    #     link = request.form.get('link')
+        
+    #     return redirect(url_for('index'))
+
+    return render_template("library.html")
 
 
 #(debug = True) Refresh the page without always having to restart the exe
