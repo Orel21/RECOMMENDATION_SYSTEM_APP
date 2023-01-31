@@ -118,7 +118,7 @@
                                 <img class="img-fluid" src="static/assets/img/portfolio/1.jpg" alt="..." />
                             </a>
                             <div class="portfolio-caption">
-                                <div class="portfolio-caption-heading">Category : 102 </div>
+                                <div class="portfolio-caption-heading">Category : 21 </div>
                                 <div class="portfolio-caption-subheading text-muted">Publisher : {{get_publisher_id}}</div>
                             </div>
                         </div>
@@ -236,8 +236,9 @@
                         <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                     <div class="col-lg-4 text-lg-end">
-                        <a class="link-dark text-decoration-none me-3" href="#!">Privacy Policy</a>
-                        <a class="link-dark text-decoration-none" href="#!">Terms of Use</a>
+                        <!-- <a class="link-dark text-decoration-none me-3" href="#!">Privacy Policy</a> -->
+                        <a class="link-dark text-decoration-none" href="#!">Terms of Use</a>            
+                        <a class="btn btn-info text-decoration-none" href="static/BOOKSAPP.drawio.html" target="_blank" role="button" style = "background-color: rgb(0, 0, 0, 0); color:black; border: 2px solid grey; margin-left: 5px;">Architecture</a>
                         <a class="btn btn-info text-decoration-none" href="http://localhost:5000/dashboard/overview" target="_blank" role="button" style = "background-color: rgb(0, 0, 0, 0); color:black; border: 2px solid grey; margin-left: 5px;">Monitoring</a>
                     </div>
                 </div>
@@ -269,13 +270,7 @@
                                         </li>
                                         <form action="/predict" method="post">
                                             <li name="get_category_id_modal">
-                                            {% for i in get_article_id %}
-                                                {% if i == reco_for_user[0] %}
-                                                    {% for j in get_category_id %}
-                                                        <strong>Category: {{j}}</strong>
-                                                    {% endfor %}
-                                                {% endif %}      
-                                            {% endfor %}
+                                                <strong>Category: [21]</strong>
                                             </li>
                                         </form>
                                     </ul>
