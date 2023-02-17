@@ -84,8 +84,6 @@ def home():
         get_category_id.append(cat[1])
         # Order list by ascending values
         get_category_id = sorted(get_category_id)
-
-
     
     # Create a list of the best articles' rating for inserting into a recommendations' carrousel
     df_best_session = df_dropped[df_dropped.session_size >= 5].sort_values(by="session_size", ascending=False)
@@ -151,10 +149,12 @@ def predict():
     _, _, top_recommendation, _, _ = executing_training_model()
 
     if request.method == 'POST':
+        ENDPOINT = "https://booksapp-reco.azurewebsites.net"
         input_user = request.form.get('input_user') 
         input_user = int(input_user)
         print("input_user", input_user)
-        reco_for_user = find_recommendation(top_recommendation, input_user)
+        reco_for_user = request.form.get(ENDPOINT + "/predict", json = {"input_user":input_user})
+        # reco_for_user = find_recommendation(top_recommendation, input_user)
         print("reco_for_user", reco_for_user)
 
     # Create a list of the best articles' rating for inserting into a recommendations' carrousel
